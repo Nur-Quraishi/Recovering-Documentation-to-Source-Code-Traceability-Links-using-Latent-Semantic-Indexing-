@@ -16,13 +16,12 @@ class CommonAjaxController {
                 subject "Code Doctor Review"
                 body message + "\n" + "From: " + name + "\n" + "Contact info: " + phone + "\n"
             }
+            render true
         }
-        catch(Exception e)
+        catch(all)
         {
-            e.printStackTrace()
-            return false
+            log.error all
+            render false
         }
-
-        return true
     }
 }
