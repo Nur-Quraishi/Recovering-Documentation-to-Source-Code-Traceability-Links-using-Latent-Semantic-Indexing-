@@ -24,4 +24,12 @@ class CommonAjaxController {
             render false
         }
     }
+
+    def resultCalculation()
+    {
+        String srsPath = params.srs
+        String scPath = params.sc
+
+        render true
+    }
 }
