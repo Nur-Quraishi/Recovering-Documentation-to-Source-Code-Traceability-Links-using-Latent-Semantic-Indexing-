@@ -21,36 +21,70 @@
                 allowedFileExtensions: ['pdf'], // default: false, all extensions allowed
                 allowedFileSize: 104857600 // 1000MB, default: false, no limitation
             });
+
+            $("#uploadForm input").jqBootstrapValidation({
+                preventSubmit: true,
+                submitError: function($form, event, errors) {
+                    // additional error messages or events
+                },
+                submitSuccess: function($form, event) {
+                    event.preventDefault(); // prevent default submit behaviour
+                    // get values from FORM
+                    var srs = $('#srs').val();
+                    var sc = $('#sc').val();
+
+                    $this = $("#start");
+                    $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
+                    $.ajax({
+                        url: "${g.createLink(controller: 'commonAjax', action: 'resultCalculation')}",
+                        type: "POST",
+                        data: {
+                            srs : srs,
+                            sc : sc
+                        },
+                        cache: false,
+                        success: function(data) {
+                            if(data == "true")
+                            {
+                                // Success message
+                                $('#status').html("<div class='alert alert-success'>");
+                                $('#status > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                                    .append("</button>");
+                                $('#status > .alert-success')
+                                    .append("<strong>Your files has been successfully uploaded and result is ready. </strong>");
+                                $('#status > .alert-success')
+                                    .append('</div>');
+                                //clear all fields
+                                $('#uploadForm').trigger("reset");
+                            }
+                            else
+                            {
+                                // Fail message
+                                $('#status').html("<div class='alert alert-danger'>");
+                                $('#status > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                                    .append("</button>");
+                                $('#status > .alert-danger').append($("<strong>").text("Something went wrong. Please try again later!"));
+                                $('#status > .alert-danger').append('</div>');
+                                //clear all fields
+                                $('#uploadForm').trigger("reset");
+                            }
+                        },
+                        error: function() {
+                            alert("Something went wrong. Please try again.");
+                        },
+                        complete: function() {
+                            setTimeout(function() {
+                                $this.prop("disabled", false); // Re-enable submit button when AJAX call is complete
+                            }, 1000);
+                        }
+                    });
+                },
+                filter: function() {
+                    return $(this).is(":visible");
+                },
+            });
         });
 
-		$(document).on("click", '#submit', function () {
-		    var srs = $('#srs').val();
-		    var sc = $('#sc').val();
-			if(srs != "" && sc != "")
-			{
-				$(this).attr("href", "#portfolio");
-
-				$.ajax({
-					url : "${g.createLink(controller: 'commonAjax', action: 'resultCalculation')}",
-					type : "POST",
-					data: {
-					    srs : srs,
-						sc : sc
-					},
-					success: function (data) {
-						alert(data);
-                    },
-                    error: function () {
-						alert("Something went wrong. Please try again");
-                    }
-				});
-			}
-			else
-			{
-			    alert("Please complete the input fields.");
-                $(this).attr("href", "#sevices");
-			}
-        });
 		var ajaxAction = "${createLink(controller:'commonAjax',action:'mailSending')}";
 	</script>
 	<!-- Navigation -->
@@ -103,24 +137,30 @@
 					<h3 class="section-subheading text-muted">Put your project SRS and source code here.</h3>
 				</div>
 			</div>
-			<div class="row justify-content-center">
-				<div class="col-sm-4">
-					<div class="form-group">
-						<label for="srs">Document (SRS):</label>
-						<input id="srs" type="file" name="srs" required data-validation-required-message="Please enter your document."/>
-					</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<form id="uploadForm" name="uploadFile" novalidate>
+						<div class="row justify-content-center">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label for="srs">Document (SRS):</label>
+									<input id="srs" type="file" class="form-control" name="srs" required data-validation-required-message="Please enter your document."/>
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label for="sc">Source Code:</label>
+									<input id="sc" type="file" class="form-control" name="sc" required data-validation-required-message="Please enter your source code."/>
+									<p class="help-block text-danger"></p>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-lg-12 text-center">
+								<button id="start" class="btn btn-xl" type="submit">Start!</button>
+								<div id="status" style="margin-top: 10px"></div>
+							</div>
+						</div>
+					</form>
 				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-sm-4">
-					<div class="form-group">
-						<label for="sc">Source Code:</label>
-						<input id="sc" type="file" name="sc" required data-validation-required-message="Please enter your source code."/>
-					</div>
-				</div>
-			</div>
-			<div class="row text-center justify-content-center">
-				<a class="btn btn-xl js-scroll-trigger" id="submit" href="">Start!</a>
 			</div>
 		</div>
 	</section>

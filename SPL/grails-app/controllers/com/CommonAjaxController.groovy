@@ -2,6 +2,7 @@ package com
 
 class CommonAjaxController {
     def mailService
+    def FileService
 
     def mailSending()
     {
@@ -29,6 +30,8 @@ class CommonAjaxController {
     {
         String srsPath = params.srs
         String scPath = params.sc
+
+        FileService.readPDF(srsPath)
 
         render true
     }
