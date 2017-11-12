@@ -28,10 +28,21 @@ class CommonAjaxController {
 
     def resultCalculation()
     {
-        String srsPath = params.srs
-        String scPath = params.sc
+        def fileDirectory = servletContext.getRealPath("/") + "upload"
+        def uploadedSRS = params.srs
+        def uploadedSC = params.sc
 
-        FileService.readPDF(srsPath)
+        File srs = new File(fileDirectory, "SRS.pdf")
+        File sc = new File(fileDirectory, "SC.zip")
+        uploadedSRS.transferTo(srs)
+        uploadedSC.transferTo(sc)
+
+
+
+        FileService.readPDF(srs.absolutePath)
+
+        srs.delete()
+        sc.delete()
 
         render true
     }

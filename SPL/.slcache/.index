@@ -5326,3 +5326,9 @@ n:8372:org/apache/pdfbox/cos/COSArray
 n:2500:org/apache/pdfbox/contentstream/operator/Operator
 n:8382:org/apache/pdfbox/pdmodel/font/PDType3Font
 n:8581:org/apache/pdfbox/pdmodel/font/PDSimpleFont
+n:435:groovyjarjarantlr/CharStreamIOException
+n:269:groovyjarjarantlr/CharStreamException
+n:438:groovyjarjarantlr/TokenStreamIOException
+n:1781:org/codehaus/groovy/control/messages/ExceptionMessage
+n:1117:jline/console/history/MemoryHistory$EntryImpl
+n:264:jline/console/history/History$Entry

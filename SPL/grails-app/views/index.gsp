@@ -26,51 +26,46 @@
                 preventSubmit: true,
                 submitError: function($form, event, errors) {
                     // additional error messages or events
+					alert(errors);
                 },
                 submitSuccess: function($form, event) {
                     event.preventDefault(); // prevent default submit behaviour
                     // get values from FORM
-                    var srs = $('#srs').val();
-                    var sc = $('#sc').val();
+                    var formData = new FormData();
+                    formData.append("srs", $('#srs').get(0).files[0]);
+                    formData.append("sc", $('#sc').get(0).files[0]);
 
                     $this = $("#start");
                     $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
                     $.ajax({
                         url: "${g.createLink(controller: 'commonAjax', action: 'resultCalculation')}",
                         type: "POST",
-                        data: {
-                            srs : srs,
-                            sc : sc
-                        },
+                        mimeType: "multipart/form-data",
+                        contentType: false,
+                        processData: false,
+                        data: formData,
                         cache: false,
                         success: function(data) {
-                            if(data == "true")
-                            {
-                                // Success message
-                                $('#status').html("<div class='alert alert-success'>");
-                                $('#status > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-                                    .append("</button>");
-                                $('#status > .alert-success')
-                                    .append("<strong>Your files has been successfully uploaded and result is ready. </strong>");
-                                $('#status > .alert-success')
-                                    .append('</div>');
-                                //clear all fields
-                                $('#uploadForm').trigger("reset");
-                            }
-                            else
-                            {
-                                // Fail message
-                                $('#status').html("<div class='alert alert-danger'>");
-                                $('#status > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
-                                    .append("</button>");
-                                $('#status > .alert-danger').append($("<strong>").text("Something went wrong. Please try again later!"));
-                                $('#status > .alert-danger').append('</div>');
-                                //clear all fields
-                                $('#uploadForm').trigger("reset");
-                            }
+							// Success message
+							$('#status').html("<div class='alert alert-success'>");
+							$('#status > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+								.append("</button>");
+							$('#status > .alert-success')
+								.append("<strong>Your files has been successfully uploaded and result is ready. </strong>");
+							$('#status > .alert-success')
+								.append('</div>');
+							//clear all fields
+							$('#uploadForm').trigger("reset");
                         },
                         error: function() {
-                            alert("Something went wrong. Please try again.");
+                            // Fail message
+                            $('#status').html("<div class='alert alert-danger'>");
+                            $('#status > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                                .append("</button>");
+                            $('#status > .alert-danger').append($("<strong>").text("Something went wrong. Please try again later!"));
+                            $('#status > .alert-danger').append('</div>');
+                            //clear all fields
+                            $('#uploadForm').trigger("reset");
                         },
                         complete: function() {
                             setTimeout(function() {
@@ -139,7 +134,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<form id="uploadForm" name="uploadFile" novalidate>
+					<form id="uploadForm" enctype="multipart/form-data" method="post" name="uploadFile" novalidate>
 						<div class="row justify-content-center">
 							<div class="col-md-5">
 								<div class="form-group">
