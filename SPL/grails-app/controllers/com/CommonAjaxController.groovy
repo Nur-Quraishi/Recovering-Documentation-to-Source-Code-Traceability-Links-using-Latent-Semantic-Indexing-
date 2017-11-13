@@ -1,5 +1,7 @@
 package com
 
+import org.apache.commons.io.FileUtils
+
 class CommonAjaxController {
     def mailService
     def FileService
@@ -28,21 +30,28 @@ class CommonAjaxController {
 
     def resultCalculation()
     {
-        def fileDirectory = servletContext.getRealPath("/") + "upload"
         def uploadedSRS = params.srs
         def uploadedSC = params.sc
 
+        def fileDirectory = servletContext.getRealPath("/") + "upload"
+        File uploadDirectory = new File(fileDirectory)
+        if(!uploadDirectory.exists())
+        {
+            uploadDirectory.mkdir()
+        }
+
+        FileUtils.cleanDirectory(uploadDirectory)
         File srs = new File(fileDirectory, "SRS.pdf")
         File sc = new File(fileDirectory, "SC.zip")
+
         uploadedSRS.transferTo(srs)
         uploadedSC.transferTo(sc)
 
-
-
         FileService.readPDF(srs.absolutePath)
+        FileService.readZip(sc.absolutePath)
 
-        srs.delete()
-        sc.delete()
+        FileUtils.cleanDirectory(uploadDirectory)
+        FileUtils.deleteDirectory(uploadDirectory)
 
         render true
     }
