@@ -7,7 +7,6 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import org.apache.pdfbox.text.PDFTextStripperByArea
 
-import java.nio.charset.StandardCharsets
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 

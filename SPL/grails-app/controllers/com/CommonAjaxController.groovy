@@ -1,17 +1,20 @@
 package com
 
-class CommonAjaxController {
+class CommonAjaxController
+{
     def mailService
     def FileService
 
     def mailSending()
     {
-        try{
+        try
+        {
             String email = params?.email.toString()
             String message = params?.message.toString()
             String phone = params?.phone.toString()
             String name = params?.name.toString()
-            mailService.sendMail {
+            mailService.sendMail
+            {
                 to "bsse0615@iit.du.ac.bd", "rayhan@du.ac.bd"
                 cc email
                 subject "Code Doctor Review"
