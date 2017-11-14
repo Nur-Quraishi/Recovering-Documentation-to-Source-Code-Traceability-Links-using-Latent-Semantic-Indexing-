@@ -1,6 +1,7 @@
 package com
 
 import grails.transaction.Transactional
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
@@ -11,7 +12,29 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 @Transactional
-class FileService {
+class FileService
+{
+    def manageFileInput(def uploadedSRS, def uploadedSC, def fileDirectory)
+    {
+        File uploadDirectory = new File(fileDirectory)
+        if(!uploadDirectory.exists())
+        {
+            uploadDirectory.mkdir()
+        }
+
+        FileUtils.cleanDirectory(uploadDirectory)
+        File srs = new File(fileDirectory, "SRS.pdf")
+        File sc = new File(fileDirectory, "SC.zip")
+
+        uploadedSRS.transferTo(srs)
+        uploadedSC.transferTo(sc)
+
+        readPDF(srs.absolutePath)
+        readZip(sc.absolutePath)
+
+        FileUtils.cleanDirectory(uploadDirectory)
+        FileUtils.deleteDirectory(uploadDirectory)
+    }
 
     def readPDF(String pdfPath) throws Exception
     {
