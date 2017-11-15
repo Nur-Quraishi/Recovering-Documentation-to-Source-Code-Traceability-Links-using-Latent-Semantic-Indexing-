@@ -33,6 +33,8 @@ class CommonAjaxController
     {
         def uploadedSRS = params.srs
         def uploadedSC = params.sc
+        def dimensionality = params.dimensionality
+
         def fileDirectory = servletContext.getRealPath("/") + "upload"
 
         FileService.manageFileInput(uploadedSRS, uploadedSC, fileDirectory)
