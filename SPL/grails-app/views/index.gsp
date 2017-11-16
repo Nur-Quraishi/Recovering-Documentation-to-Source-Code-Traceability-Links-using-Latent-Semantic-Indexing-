@@ -26,7 +26,6 @@
                 preventSubmit: true,
                 submitError: function($form, event, errors) {
                     // additional error messages or events
-					alert(errors);
                 },
                 submitSuccess: function($form, event) {
                     event.preventDefault(); // prevent default submit behaviour
@@ -145,6 +144,11 @@
 								<div class="form-group">
 									<label for="sc">Source Code:</label>
 									<input id="sc" type="file" class="form-control" name="sc" required data-validation-required-message="Please enter your source code."/>
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label for="dimensionality">Dimension of Matrix:</label>
+									<input id="dimensionality" type="number" class="form-control" name="dimensionality" value="0" min="0" required data-validation-required-message="Please enter the dimension of matrix."/>
 									<p class="help-block text-danger"></p>
 								</div>
 							</div>
