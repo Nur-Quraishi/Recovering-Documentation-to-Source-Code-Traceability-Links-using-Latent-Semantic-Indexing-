@@ -2,6 +2,7 @@ package lsi
 
 import org.apache.commons.io.IOUtils
 
+import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -16,7 +17,8 @@ class JavaCorpus extends Corpus
     {
         ZipFile zipFile = new ZipFile(filePath)
         Enumeration<? extends ZipEntry> entries = zipFile.entries()
-        System.out.println(entries)
+        String regex = "^(?<indent>\\s*)(?<mod1>\\w+)\\s(?<mod2>\\w+)?\\s*(?<mod3>\\w+)?\\s*(?<return>\\b\\w+)\\s(?<name>\\w+)\\((?<arg>.*?)\\)\\s*\\{(?<body>.+?)^\\k<indent>\\}"
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.DOTALL)
 
         while(entries.hasMoreElements())
         {

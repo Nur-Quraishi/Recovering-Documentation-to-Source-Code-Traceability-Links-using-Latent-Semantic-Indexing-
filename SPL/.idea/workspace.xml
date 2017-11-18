@@ -41,8 +41,8 @@
       <file leaf-file-name="CommonAjaxController.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/controllers/com/CommonAjaxController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="62" column="9" lean-forward="true" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
+            <state relative-caret-position="224">
+              <caret line="53" column="50" lean-forward="false" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
               <folding>
                 <element signature="e#13#30#0" expanded="true" />
               </folding>
@@ -53,8 +53,8 @@
       <file leaf-file-name="JavaCorpus.groovy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/groovy/lsi/JavaCorpus.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+            <state relative-caret-position="36">
+              <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
               <folding>
                 <element signature="e#13#49#0" expanded="true" />
               </folding>
@@ -65,8 +65,8 @@
       <file leaf-file-name="PDFCorpus.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/groovy/lsi/PDFCorpus.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1225">
-              <caret line="35" column="12" lean-forward="false" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
+            <state relative-caret-position="104">
+              <caret line="142" column="68" lean-forward="true" selection-start-line="142" selection-start-column="68" selection-end-line="142" selection-end-column="68" />
               <folding>
                 <element signature="e#13#56#0" expanded="true" />
               </folding>
@@ -119,12 +119,12 @@
         <option value="$PROJECT_DIR$/src/java/lsi/PDFCorpus.java" />
         <option value="$PROJECT_DIR$/src/java/lsi/Corpus.java" />
         <option value="$PROJECT_DIR$/src/groovy/lsi/Corpus.groovy" />
-        <option value="$PROJECT_DIR$/src/groovy/lsi/JavaCorpus.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/com/CommonAjaxController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/services/com/FileService.groovy" />
         <option value="$PROJECT_DIR$/web-app/css/agency.min.css" />
         <option value="$PROJECT_DIR$/grails-app/views/index.gsp" />
         <option value="$PROJECT_DIR$/web-app/files/stopWordList.txt" />
+        <option value="$PROJECT_DIR$/src/groovy/lsi/JavaCorpus.groovy" />
         <option value="$PROJECT_DIR$/src/groovy/lsi/PDFCorpus.groovy" />
       </list>
     </option>
@@ -167,22 +167,6 @@
             <path>
               <item name="" type="f1a0d8d8:GrailsRootNode" />
               <item name="" type="3c7b8529:GrailsApplicationNode" />
-            </path>
-            <path>
-              <item name="" type="f1a0d8d8:GrailsRootNode" />
-              <item name="" type="3c7b8529:GrailsApplicationNode" />
-              <item name="groovy" type="a8c2cad5:GrailsPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="" type="f1a0d8d8:GrailsRootNode" />
-              <item name="" type="3c7b8529:GrailsApplicationNode" />
-              <item name="groovy" type="a8c2cad5:GrailsPsiDirectoryNode" />
-              <item name="lsi" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="" type="f1a0d8d8:GrailsRootNode" />
-              <item name="" type="3c7b8529:GrailsApplicationNode" />
-              <item name="web-app" type="a8c2cad5:GrailsPsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -314,12 +298,12 @@
       <updated>1510894820393</updated>
       <workItem from="1510894827588" duration="788000" />
       <workItem from="1510897040648" duration="742000" />
-      <workItem from="1510904904981" duration="48751000" />
+      <workItem from="1510904904981" duration="66812000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50281000" />
+    <option name="totallyTimeSpent" value="68342000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
@@ -334,7 +318,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39802632" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39802632" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -367,7 +351,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="16" />
+      <option name="time" value="52" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -496,16 +480,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/com/CommonAjaxController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="62" column="9" lean-forward="true" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
-          <folding>
-            <element signature="e#13#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/Lsi.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-477">
@@ -519,15 +493,33 @@
         <state relative-caret-position="-1684">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/com/CommonAjaxController.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="53" column="50" lean-forward="false" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+          <folding>
+            <element signature="e#13#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Grails/grails-2.5.4/lib/org.codehaus.groovy/groovy-all/jars/groovy-all-2.4.4.jar!/org/codehaus/groovy/runtime/callsite/CallSiteArray.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/lsi/PDFCorpus.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1225">
-          <caret line="35" column="12" lean-forward="false" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
+        <state relative-caret-position="104">
+          <caret line="142" column="68" lean-forward="true" selection-start-line="142" selection-start-column="68" selection-end-line="142" selection-end-column="68" />
           <folding>
             <element signature="e#13#56#0" expanded="true" />
           </folding>
@@ -536,8 +528,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/lsi/JavaCorpus.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        <state relative-caret-position="36">
+          <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
           <folding>
             <element signature="e#13#49#0" expanded="true" />
           </folding>

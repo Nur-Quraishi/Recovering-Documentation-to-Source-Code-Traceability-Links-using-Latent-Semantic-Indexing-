@@ -21,6 +21,8 @@ class PDFCorpus extends Corpus
             Map<String, Integer> wordFrequency = null
             int wordCounter, documentCounter
             List <String> parsedDocumentNameList = new ArrayList<>()
+            String fragmantedHeadLine = null
+            String currentDocument
             boolean readerFlag = false
             boolean isTOCFinish = false
 
@@ -34,7 +36,13 @@ class PDFCorpus extends Corpus
             String[] lines = pdfFileInText.split("\\r?\\n")
             for (String line : lines)
             {
-                line = line.toLowerCase().replaceAll("[^a-z0-9 ]+?[^\\d(\\.\\d)*\$]", "")
+                line = line.toLowerCase().replaceAll("[^a-z0-9 .]+", "")
+
+                if(fragmantedHeadLine != null)
+                {
+                    line = fragmantedHeadLine + line.trim()
+                    fragmantedHeadLine = null
+                }
 
                 if(line.contains("table of contents"))
                 {
@@ -44,7 +52,7 @@ class PDFCorpus extends Corpus
 
                 if(readerFlag && !isTOCFinish)
                 {
-                    if(parsedDocumentNameList.size() > 0 && line.contains(parsedDocumentNameList.get(0)))
+                    if(parsedDocumentNameList.size() > 0 && line.contains(parsedDocumentNameList.get(0)) && !line.contains(". . ."))
                     {
                         isTOCFinish = true
                         documentCounter = 0
@@ -53,33 +61,37 @@ class PDFCorpus extends Corpus
                     else
                     {
                         String[] documentName = line.trim().split(" ")
-                        if(documentName.size() > 2)
+                        int documentNameListSize = documentName.size()
+                        String parsedDocumentName = ""
+
+                        for(int i = 0; i < documentNameListSize-1; i++)
                         {
-                            parsedDocumentNameList.add(documentName[0].trim() + documentName[1].trim())
-                            documentLengthMap.put(documentName[1].trim(),0)
+                            if(documentName[i] != ".")
+                                parsedDocumentName  = parsedDocumentName + documentName[i] + " "
+                            else
+                                break
                         }
-                        else
+                        parsedDocumentName = parsedDocumentName.trim()
+                        if(parsedDocumentName.endsWith("."))
                         {
-                            parsedDocumentNameList.add(documentName[0].trim())
-                            documentLengthMap.put(documentName[0].trim(),0)
+                            parsedDocumentName = parsedDocumentName.substring(0, parsedDocumentName.length()-1)
                         }
+                        parsedDocumentNameList.add(parsedDocumentName)
+                        documentLengthMap.put(parsedDocumentName, 0)
                     }
                 }
 
                 if(readerFlag && isTOCFinish)
                 {
-                    String[] documentName = parsedDocumentNameList.get(documentCounter).trim().split(" ")
-                    String currentDocument
-                    if(documentName.size() > 1)
+                    currentDocument = parsedDocumentNameList.get(documentCounter)
+
+                    if(documentCounter + 1 < parsedDocumentNameList.size() && line.length() < parsedDocumentNameList.get(documentCounter + 1).length() && line.contains(parsedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
                     {
-                        currentDocument = documentName[1].trim()
-                    }
-                    else
-                    {
-                        currentDocument = documentName[0].trim()
+                        fragmantedHeadLine = line.trim() + " "
+                        continue
                     }
 
-                    if(line.contains(parsedDocumentNameList.get(documentCounter)))
+                    if(documentCounter + 1 < parsedDocumentNameList.size() && line.contains(parsedDocumentNameList.get(documentCounter + 1)))
                     {
                         documentLengthMap.put(currentDocument, wordCounter)
                         wordCounter = 0
@@ -90,11 +102,23 @@ class PDFCorpus extends Corpus
                     else
                     {
                         line = line.replaceAll("[^a-z ]+","")
+
+                        if(line.trim().equalsIgnoreCase(""))
+                        {
+                            continue
+                        }
+
                         String[] wordsInLine = line.trim().split(" ")
 
                         for (String word : wordsInLine)
                         {
                             word = word.trim()
+
+                            if(word.equalsIgnoreCase(""))
+                            {
+                                continue
+                            }
+
                             if (isStopListWord(word))
                             {
                                 wordCounter += 1
@@ -126,6 +150,7 @@ class PDFCorpus extends Corpus
                     }
                 }
             }
+            documentLengthMap.put(currentDocument, wordCounter)
             pdfDocument.close()
         }
         else
