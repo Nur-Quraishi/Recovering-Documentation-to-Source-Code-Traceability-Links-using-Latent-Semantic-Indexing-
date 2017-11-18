@@ -21,7 +21,7 @@ class PDFCorpus extends Corpus
             Map<String, Integer> wordFrequency = null
             int wordCounter, documentCounter
             List <String> parsedDocumentNameList = new ArrayList<>()
-            String fragmantedHeadLine = null
+            String fragmentedHeadLine = null
             String currentDocument
             boolean readerFlag = false
             boolean isTOCFinish = false
@@ -38,10 +38,10 @@ class PDFCorpus extends Corpus
             {
                 line = line.toLowerCase().replaceAll("[^a-z0-9 .]+", "")
 
-                if(fragmantedHeadLine != null)
+                if(fragmentedHeadLine != null)
                 {
-                    line = fragmantedHeadLine + line.trim()
-                    fragmantedHeadLine = null
+                    line = fragmentedHeadLine + line.trim()
+                    fragmentedHeadLine = null
                 }
 
                 if(line.contains("table of contents"))
@@ -87,7 +87,7 @@ class PDFCorpus extends Corpus
 
                     if(documentCounter + 1 < parsedDocumentNameList.size() && line.length() < parsedDocumentNameList.get(documentCounter + 1).length() && line.contains(parsedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
                     {
-                        fragmantedHeadLine = line.trim() + " "
+                        fragmentedHeadLine = line.trim() + " "
                         continue
                     }
 
