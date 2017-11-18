@@ -1,5 +1,9 @@
 package com
 
+import lsi.Corpus
+import lsi.JavaCorpus
+import lsi.PDFCorpus
+
 class CommonAjaxController
 {
     def mailService
@@ -35,11 +39,27 @@ class CommonAjaxController
         def uploadedSC = params.sc
         def dimensionality = params.dimensionality
 
+        List<String> filePaths = new ArrayList<>()
         def fileDirectory = servletContext.getRealPath("/") + "upload"
+        String stopWordListPath = servletContext.getRealPath("/") + "files\\stopWordList.txt"
 
-        FileService.manageFileInput(uploadedSRS, uploadedSC, fileDirectory)
+        try
+        {
+            filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
+            PDFCorpus pdfCorpus = new PDFCorpus(stopWordListPath)
+            pdfCorpus.parseFile(filePaths.get(0))
 
-        render true
+            JavaCorpus javaCorpus = new JavaCorpus(stopWordListPath)
+            javaCorpus.parseFile(filePaths.get(1))
+
+            FileService.removeFiles(fileDirectory, filePaths)
+            render true
+        }
+        catch (Exception e)
+        {
+            FileService.removeFiles(fileDirectory, filePaths)
+            throw e
+        }
     }
 }

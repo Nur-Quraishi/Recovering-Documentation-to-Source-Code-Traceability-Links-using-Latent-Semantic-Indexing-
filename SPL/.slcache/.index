@@ -5336,3 +5336,5 @@ n:20011:org/apache/commons/io/IOUtils
 n:33024:org/apache/commons/io/FileUtils
 n:740:sl/org/objectweb/asm/tree/IincInsnNode
 n:1671:sl/org/objectweb/asm/tree/TableSwitchInsnNode
+n:250:org/apache/tools/ant/RuntimeConfigurable$1
+n:1262:groovyjarjarantlr/NoViableAltForCharException

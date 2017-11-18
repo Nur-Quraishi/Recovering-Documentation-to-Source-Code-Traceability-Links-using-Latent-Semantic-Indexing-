@@ -140,6 +140,7 @@ f
 far
 few
 fifth
+figure
 first
 five
 followed
@@ -234,6 +235,7 @@ least
 less
 lest
 let
+level
 like
 liked
 likely
@@ -396,6 +398,7 @@ sure
 t
 take
 taken
+table
 tell
 tends
 th

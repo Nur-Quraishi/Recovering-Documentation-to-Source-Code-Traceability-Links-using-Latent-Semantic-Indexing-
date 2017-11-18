@@ -14,7 +14,7 @@
             $('#sc').fileselect({
                 browseBtnClass: 'btn btn-info', // default: btn btn-primary
                 allowedFileExtensions: ['zip'], // default: false, all extensions allowed
-                allowedFileSize: 31457280 // 30MB, default: false, no limitation
+                allowedFileSize: 104857600 // 100MB, default: false, no limitation
             });
             $('#srs').fileselect({
                 browseBtnClass: 'btn btn-info', // default: btn btn-primary
@@ -54,7 +54,7 @@
 							$('#status > .alert-success')
 								.append('</div>');
 							//clear all fields
-							$('#uploadForm').trigger("reset");
+							//$('#uploadForm').trigger("reset");
                         },
                         error: function() {
                             // Fail message
@@ -147,9 +147,8 @@
 									<p class="help-block text-danger"></p>
 								</div>
 								<div class="form-group">
-									<label for="dimensionality">Dimension of Matrix:</label>
-									<input id="dimensionality" type="number" class="form-control" name="dimensionality" value="0" min="0" required data-validation-required-message="Please enter the dimension of matrix."/>
-									<p class="help-block text-danger"></p>
+									<label for="dimensionality">Dimension of LSI Subspace:</label>
+									<input id="dimensionality" type="number" class="form-control" name="dimensionality" min="0" value="0"/>
 								</div>
 							</div>
 							<div class="clearfix"></div>
