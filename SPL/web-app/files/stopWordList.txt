@@ -328,6 +328,8 @@ please
 plus
 possible
 presumably
+printf
+println
 probably
 provides
 q
@@ -395,6 +397,7 @@ sub
 such
 sup
 sure
+system
 t
 take
 taken

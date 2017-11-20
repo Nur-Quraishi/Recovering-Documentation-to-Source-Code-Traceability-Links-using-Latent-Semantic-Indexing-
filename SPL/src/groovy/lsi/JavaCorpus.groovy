@@ -1,8 +1,10 @@
 package lsi
 
-import org.apache.commons.io.IOUtils
+import com.github.javaparser.JavaParser
+import com.github.javaparser.ast.CompilationUnit
+import jvp.ClassVisitor
+import jvp.MethodVisitor
 
-import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -17,19 +19,46 @@ class JavaCorpus extends Corpus
     {
         ZipFile zipFile = new ZipFile(filePath)
         Enumeration<? extends ZipEntry> entries = zipFile.entries()
-        String regex = "^(?<indent>\\s*)(?<mod1>\\w+)\\s(?<mod2>\\w+)?\\s*(?<mod3>\\w+)?\\s*(?<return>\\b\\w+)\\s(?<name>\\w+)\\((?<arg>.*?)\\)\\s*\\{(?<body>.+?)^\\k<indent>\\}"
-        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.DOTALL)
 
         while(entries.hasMoreElements())
         {
             ZipEntry entry = entries.nextElement()
-            System.out.println(entry.getName())
+
             if(entry.getName().contains(".java"))
             {
-                InputStream stream = zipFile.getInputStream(entry)
-                System.out.println(IOUtils.toString(stream))
+                InputStream inputStream = zipFile.getInputStream(entry)
+                CompilationUnit compilationUnit = JavaParser.parse(inputStream)
+                String parsedString = ""
+
+                ClassVisitor classVisitor = new ClassVisitor()
+                MethodVisitor methodVisitor = new MethodVisitor()
+
+                classVisitor.visit(compilationUnit, null)
+                parsedString += classVisitor.getParsedText()
+
+                methodVisitor.visit(compilationUnit, null)
+                parsedString += methodVisitor.getParsedText()
+
+                TreeMap<String, Integer> wordFreq = null
+                int wordCounter = 0
+
+                System.out.println(parsedString)
+                documentLengthMap.put(entry.getName(), wordCounter)
             }
         }
         zipFile.close()
+    }
+
+    String splitCamelCaseWord(String camelCaseWord)
+    {
+        String spittedWords = ""
+        String[] wordsInCamelCaseWord = camelCaseWord.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
+
+        for(String word : wordsInCamelCaseWord)
+        {
+            spittedWords = spittedWords + word + " "
+        }
+
+        return spittedWords.trim()
     }
 }
