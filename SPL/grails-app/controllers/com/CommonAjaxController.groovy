@@ -1,8 +1,6 @@
 package com
 
 import lsi.Corpus
-import lsi.JavaCorpus
-import lsi.PDFCorpus
 
 class CommonAjaxController
 {
@@ -47,11 +45,9 @@ class CommonAjaxController
         {
             filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
-            PDFCorpus pdfCorpus = new PDFCorpus(stopWordListPath)
-            pdfCorpus.parseFile(filePaths.get(0))
-
-            JavaCorpus javaCorpus = new JavaCorpus(stopWordListPath)
-            javaCorpus.parseFile(filePaths.get(1))
+            Corpus corpus = new Corpus(stopWordListPath)
+            corpus.parsePDFFile(filePaths.get(0))
+            corpus.parseJavaFile(filePaths.get(1))
 
             FileService.removeFiles(fileDirectory, filePaths)
             render true
