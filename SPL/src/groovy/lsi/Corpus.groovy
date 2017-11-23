@@ -9,6 +9,8 @@ import org.apache.pdfbox.text.PDFTextStripper
 import org.apache.pdfbox.text.PDFTextStripperByArea
 
 import java.io.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -16,8 +18,9 @@ class Corpus
 {
     String stopListPath
     List<String> stopWordList = new ArrayList<>()
+    List <String> orderedDocumentNameList = new ArrayList<>()
     Map<String, Integer> wordsInDocumentSpaceMap = new TreeMap<>()
-    Map<String, Integer> documentLengthMap = new HashMap<>()
+    Map<String, Integer> documentLengthMap = new TreeMap<>()
     Map<String, Map<String, Integer>> wordsInEachDocumentMap = new TreeMap<>()
     int numberOfExternalDocuments, numberOfSourceCodeDocuments
 
@@ -157,9 +160,7 @@ class Corpus
 
         if (!pdfDocument.isEncrypted())
         {
-            Map<String, Integer> wordFrequency = null
             int wordCounter, documentCounter
-            List <String> parsedDocumentNameList = new ArrayList<>()
             String fragmentedHeadLine = null
             String currentDocument
             boolean readerFlag = false
@@ -191,11 +192,11 @@ class Corpus
 
                 if(readerFlag && !isTOCFinish)
                 {
-                    if(parsedDocumentNameList.size() > 0 && line.contains(parsedDocumentNameList.get(0)) && !line.contains(". . ."))
+                    if(orderedDocumentNameList.size() > 0 && line.contains(orderedDocumentNameList.get(0)) && !line.contains(". . ."))
                     {
                         isTOCFinish = true
                         documentCounter = 0
-                        numberOfExternalDocuments = parsedDocumentNameList.size()
+                        numberOfExternalDocuments = orderedDocumentNameList.size()
                         continue
                     }
                     else
@@ -216,27 +217,26 @@ class Corpus
                         {
                             parsedDocumentName = parsedDocumentName.substring(0, parsedDocumentName.length()-1)
                         }
-                        parsedDocumentNameList.add(parsedDocumentName)
+                        orderedDocumentNameList.add(parsedDocumentName)
                         documentLengthMap.put(parsedDocumentName, 0)
                     }
                 }
 
                 if(readerFlag && isTOCFinish)
                 {
-                    currentDocument = parsedDocumentNameList.get(documentCounter)
+                    currentDocument = orderedDocumentNameList.get(documentCounter)
 
-                    if(documentCounter + 1 < parsedDocumentNameList.size() && line.length() < parsedDocumentNameList.get(documentCounter + 1).length() && line.contains(parsedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
+                    if(documentCounter + 1 < orderedDocumentNameList.size() && line.length() < orderedDocumentNameList.get(documentCounter + 1).length() && line.contains(orderedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
                     {
                         fragmentedHeadLine = line.trim() + " "
                         continue
                     }
 
-                    if(documentCounter + 1 < parsedDocumentNameList.size() && line.contains(parsedDocumentNameList.get(documentCounter + 1)))
+                    if(documentCounter + 1 < orderedDocumentNameList.size() && line.contains(orderedDocumentNameList.get(documentCounter + 1)))
                     {
                         documentLengthMap.put(currentDocument, wordCounter)
                         wordCounter = 0
                         documentCounter += 1
-                        wordFrequency = null
                         continue
                     }
                     else
@@ -259,32 +259,7 @@ class Corpus
                                 continue
                             }
 
-                            if (isStopListWord(word))
-                            {
-                                wordCounter += 1
-                                continue
-                            }
-
-                            if (wordsInDocumentSpaceMap.containsKey(word))
-                            {
-                                wordFrequency = wordsInEachDocumentMap.get(word)
-                                if (wordFrequency.containsKey(currentDocument))
-                                {
-                                    wordFrequency.put(currentDocument, wordFrequency.get(currentDocument) + 1)
-                                }
-                                else
-                                {
-                                    wordFrequency.put(currentDocument, 1)
-                                }
-                                wordsInDocumentSpaceMap.put(word, wordsInDocumentSpaceMap.get(word) + 1)
-                            }
-                            else
-                            {
-                                wordsInDocumentSpaceMap.put(word, 1)
-                                wordFrequency = new TreeMap<String, Integer>()
-                                wordFrequency.put(currentDocument, 1)
-                                wordsInEachDocumentMap.put(word, wordFrequency)
-                            }
+                            populateMaps(word, currentDocument)
                             wordCounter += 1
                         }
                     }
@@ -305,6 +280,7 @@ class Corpus
         ZipFile zipFile = new ZipFile(filePath)
         Enumeration<? extends ZipEntry> entries = zipFile.entries()
         int documentCounter = 0
+        Pattern pattern = Pattern.compile("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
 
         while(entries.hasMoreElements())
         {
@@ -324,12 +300,50 @@ class Corpus
 
                 methodVisitor.visit(compilationUnit, null)
                 parsedString += methodVisitor.getParsedText()
+                parsedString = parsedString.trim().replaceAll("[^A-Za-z_]+", " ")
 
-                TreeMap<String, Integer> wordFreq = null
+                //System.out.println(parsedString)
+
                 int wordCounter = 0
 
-                System.out.println(parsedString)
+                List<String> wordsInParsedString = Arrays.asList(parsedString.split(" "))
+                for(String word : wordsInParsedString)
+                {
+                    word = word.trim()
+                    if(word.equalsIgnoreCase(""))
+                    {
+                        continue
+                    }
+
+                    if(word.contains("_"))
+                    {
+                        for(String splitWord : splitWordWithUnderscore(word))
+                        {
+                            splitWord = splitWord.toLowerCase()
+                            populateMaps(splitWord, entry.getName())
+                            wordCounter += 1
+                        }
+                    }
+
+                    Matcher matcher = pattern.matcher(word)
+
+                    if(matcher.find())
+                    {
+                        for(String splitWord : splitCamelCaseWord(word))
+                        {
+                            splitWord = splitWord.toLowerCase()
+                            populateMaps(splitWord, entry.getName())
+                            wordCounter += 1
+                        }
+                    }
+
+                    word = word.toLowerCase()
+                    populateMaps(word, entry.getName())
+                    wordCounter += 1
+                }
+
                 documentCounter += 1
+                orderedDocumentNameList.add(entry.getName())
                 documentLengthMap.put(entry.getName(), wordCounter)
             }
         }
@@ -337,16 +351,48 @@ class Corpus
         zipFile.close()
     }
 
-    String splitCamelCaseWord(String camelCaseWord)
+    List <String> splitCamelCaseWord(String camelCaseWord)
     {
-        String spittedWords = ""
-        String[] wordsInCamelCaseWord = camelCaseWord.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
+        List <String> splitWords = camelCaseWord.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])").toList()
 
-        for(String word : wordsInCamelCaseWord)
+        return splitWords
+    }
+
+    List <String> splitWordWithUnderscore(String WordWithUnderscore)
+    {
+        List <String> splitWords = WordWithUnderscore.split("_").toList()
+
+        return splitWords
+    }
+
+    void populateMaps(String word, String currentDocument)
+    {
+        if (isStopListWord(word))
         {
-            spittedWords = spittedWords + word + " "
+            return
         }
 
-        return spittedWords.trim()
+        if (wordsInDocumentSpaceMap.containsKey(word))
+        {
+            Map <String, Integer> wordFrequency = wordsInEachDocumentMap.get(word)
+            if (wordFrequency.containsKey(currentDocument))
+            {
+                wordFrequency.put(currentDocument, wordFrequency.get(currentDocument) + 1)
+            }
+            else
+            {
+                wordFrequency.put(currentDocument, 1)
+            }
+            wordsInDocumentSpaceMap.put(word, wordsInDocumentSpaceMap.get(word) + 1)
+        }
+        else
+        {
+            wordsInDocumentSpaceMap.put(word, 1)
+            Map <String, Integer> wordFrequency = new TreeMap <String, Integer>()
+            wordFrequency.put(currentDocument, 1)
+            wordsInEachDocumentMap.put(word, wordFrequency)
+        }
+
+        return
     }
 }
