@@ -46,6 +46,7 @@ class CommonAjaxController
             filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
             Corpus corpus = new Corpus(stopWordListPath)
+            corpus.createStopList()
             corpus.parsePDFFile(filePaths.get(0))
             corpus.parseJavaFile(filePaths.get(1))
 
