@@ -48,29 +48,30 @@ class LSIAlgorithm
 
     void prepareMatrixForLSI()
     {
-        for(int i = 0; i < leftSingularMatrix.getRowDimension(); i++)
+        for(int row = 0; row < leftSingularMatrix.getRowDimension(); row++)
         {
-            for (int j = dimensionOfLSISubspace; j < leftSingularMatrix.getColumnDimension(); j++)
+            for (int column = dimensionOfLSISubspace; column < leftSingularMatrix.getColumnDimension(); column++)
             {
-                leftSingularMatrix.set(i, j, 0)
+                leftSingularMatrix.set(row, column, 0)
             }
         }
 
-        for(int i = dimensionOfLSISubspace; i < singularValueMatrix.getRowDimension(); i++)
+        for(int row = dimensionOfLSISubspace; row < singularValueMatrix.getRowDimension(); row++)
         {
-            for(int j = dimensionOfLSISubspace; j < singularValueMatrix.getColumnDimension(); j++)
+            for(int column = dimensionOfLSISubspace; column < singularValueMatrix.getColumnDimension(); column++)
             {
-                singularValueMatrix.set(i, j, 0)
+                singularValueMatrix.set(row, column, 0)
             }
         }
 
-        for(int i = 0; i < rightSingularMatrix.getRowDimension(); i++)
+        for(int row = 0; row < rightSingularMatrix.getRowDimension(); row++)
         {
-            for (int j = dimensionOfLSISubspace; j < rightSingularMatrix.getColumnDimension(); j++)
+            for (int column = dimensionOfLSISubspace; column < rightSingularMatrix.getColumnDimension(); column++)
             {
-                rightSingularMatrix.set(i, j, 0)
+                rightSingularMatrix.set(row, column, 0)
             }
         }
     }
 
+    //TODO
 }

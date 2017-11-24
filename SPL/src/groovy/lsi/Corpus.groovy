@@ -136,18 +136,18 @@ class Corpus
     double[][] getTermMatrixValues()
     {
         double[][] matrixTerms = new double[getNumberOfTerms()][getNumberOfDocuments()]
-        int i, j
-        i = 0
+        int row, column
+        row = 0
 
         for (String term : wordsInDocumentSpaceMap.keySet())
         {
-            j = 0
+            column = 0
             for (String document : orderedDocumentNameList)
             {
-                matrixTerms[i][j] = getTFInDocument(term, document) * getIDF(term)
-                j++
+                matrixTerms[row][column] = getTFInDocument(term, document) * getIDF(term)
+                column++
             }
-            i++
+            row++
         }
 
         return matrixTerms
