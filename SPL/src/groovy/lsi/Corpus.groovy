@@ -142,7 +142,7 @@ class Corpus
         for (String term : wordsInDocumentSpaceMap.keySet())
         {
             j = 0
-            for (String document : documentLengthMap.keySet())
+            for (String document : orderedDocumentNameList)
             {
                 matrixTerms[i][j] = getTFInDocument(term, document) * getIDF(term)
                 j++

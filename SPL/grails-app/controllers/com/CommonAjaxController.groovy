@@ -1,6 +1,7 @@
 package com
 
 import lsi.Corpus
+import lsi.LSIAlgorithm
 
 class CommonAjaxController
 {
@@ -35,7 +36,7 @@ class CommonAjaxController
     {
         def uploadedSRS = params.srs
         def uploadedSC = params.sc
-        def dimensionality = params.dimensionality
+        int dimensionality = Integer.valueOf(params.dimensionality)
 
         List<String> filePaths = new ArrayList<>()
         def fileDirectory = servletContext.getRealPath("/") + "upload"
@@ -45,10 +46,8 @@ class CommonAjaxController
         {
             filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
-            Corpus corpus = new Corpus(stopWordListPath)
-            corpus.createStopList()
-            corpus.parsePDFFile(filePaths.get(0))
-            corpus.parseJavaFile(filePaths.get(1))
+            LSIAlgorithm lsiAlgorithm = new LSIAlgorithm(filePaths.get(0), filePaths.get(1), stopWordListPath, dimensionality)
+
 
             FileService.removeFiles(fileDirectory, filePaths)
             render true
