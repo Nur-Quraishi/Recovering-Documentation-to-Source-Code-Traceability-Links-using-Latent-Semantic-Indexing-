@@ -17,11 +17,11 @@ import java.util.zip.ZipFile
 class Corpus
 {
     String stopListPath
-    List<String> stopWordList = new ArrayList<>()
+    List <String> stopWordList = new ArrayList<>()
     List <String> orderedDocumentNameList = new ArrayList<>()
-    Map<String, Integer> wordsInDocumentSpaceMap = new TreeMap<>()
-    Map<String, Integer> documentLengthMap = new TreeMap<>()
-    Map<String, Map<String, Integer>> wordsInEachDocumentMap = new TreeMap<>()
+    Map <String, Integer> wordsInDocumentSpaceMap = new TreeMap<>()
+    Map <String, Integer> documentLengthMap = new TreeMap<>()
+    Map <String, Map<String, Integer>> wordsInEachDocumentMap = new TreeMap<>()
     int numberOfExternalDocuments, numberOfSourceCodeDocuments
 
     Corpus(String stopListPath)
@@ -60,14 +60,6 @@ class Corpus
         return false
     }
 
-    boolean isTermOnWordList(String term)
-    {
-        if (wordsInDocumentSpaceMap.containsKey(term.toLowerCase()))
-            return true
-
-        return false
-    }
-
     boolean isTermInDocument(String term, String document)
     {
         Map<String, Integer> documentMap = wordsInEachDocumentMap.get(term.toLowerCase())
@@ -88,19 +80,19 @@ class Corpus
         return documentLengthMap.size()
     }
 
-    Map<String, Integer> getWordsInDocumentSpaceMap()
+    List <String> getOrderedDocumentNameList()
     {
-        return wordsInDocumentSpaceMap
+        return orderedDocumentNameList
     }
 
-    List<String> getDocumentList()
+    int getNumberOfExternalDocuments()
     {
-        List<String> documentList = new ArrayList<>()
+        return numberOfExternalDocuments
+    }
 
-        for (String document : documentLengthMap.keySet())
-            documentList.add(document)
-
-        return documentList
+    int getNumberOfSourceCodeDocuments()
+    {
+        return numberOfSourceCodeDocuments
     }
 
     int getTermFrequency(String term)
@@ -302,11 +294,9 @@ class Corpus
                 parsedString += methodVisitor.getParsedText()
                 parsedString = parsedString.trim().replaceAll("[^A-Za-z_]+", " ")
 
-                //System.out.println(parsedString)
-
                 int wordCounter = 0
-
                 List<String> wordsInParsedString = Arrays.asList(parsedString.split(" "))
+
                 for(String word : wordsInParsedString)
                 {
                     word = word.trim()

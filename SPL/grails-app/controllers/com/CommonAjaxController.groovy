@@ -47,7 +47,9 @@ class CommonAjaxController
             filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
             LSIAlgorithm lsiAlgorithm = new LSIAlgorithm(filePaths.get(0), filePaths.get(1), stopWordListPath, dimensionality)
-
+            lsiAlgorithm.createTermByDocumentMatrix()
+            lsiAlgorithm.performSingularValueDecomposition()
+            lsiAlgorithm.findSimilarities()
 
             FileService.removeFiles(fileDirectory, filePaths)
             render true

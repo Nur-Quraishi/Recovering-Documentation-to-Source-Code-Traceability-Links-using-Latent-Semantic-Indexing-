@@ -11,7 +11,7 @@ class LSIAlgorithm
     Matrix leftSingularMatrix
     Matrix rightSingularMatrix
     Matrix singularValueMatrix
-    Map <String, Double> similarityResult = new TreeMap<>()
+    Map <String, Map <String, Double>> similarityResultOfEachDocument = new TreeMap<>()
     int dimensionOfLSISubspace
 
     LSIAlgorithm(String pdfPath, String zipPath, String stopWordPath, int dimensionOfLSISubspace) throws IOException
@@ -73,5 +73,65 @@ class LSIAlgorithm
         }
     }
 
-    //TODO
+    Matrix getIndividualDocumentMatrix(int columnNumber)
+    {
+        Matrix columnMatrix = new Matrix(rightSingularMatrix.getColumnDimension(), 1)
+        Matrix individualDocumentMatrix
+
+        for (int i = 0; i<columnMatrix.getRowDimension(); i++)
+        {
+            columnMatrix.set(i, 0, rightSingularMatrix.get(columnNumber, i))
+        }
+
+        individualDocumentMatrix = leftSingularMatrix.times(singularValueMatrix)
+        individualDocumentMatrix = individualDocumentMatrix.times(columnMatrix)
+
+        return individualDocumentMatrix
+    }
+
+    double calculateVectorModulus(Matrix matrix)
+    {
+        double modulusResult = 0
+
+        for (int i = 0; i < matrix.getRowDimension(); i++)
+        {
+            modulusResult += Math.pow(matrix.get(i, 0), 2)
+        }
+
+        modulusResult = Math.sqrt(modulusResult)
+        return modulusResult
+    }
+
+    double measureSimilarity(Matrix srsDocumentMatrix, Matrix scDocumentMatrix)
+    {
+        Matrix productMatrix
+        double denominator, similarityResult
+
+        productMatrix = (srsDocumentMatrix.transpose()).times(scDocumentMatrix)
+        denominator = calculateVectorModulus(srsDocumentMatrix) * calculateVectorModulus(scDocumentMatrix)
+
+        similarityResult = productMatrix.det() / denominator
+        return similarityResult
+    }
+
+    void findSimilarities()
+    {
+        int numberOfExternalDocuments = corpus.getNumberOfExternalDocuments()
+        int numberOfSourceCodeDocuments = corpus.getNumberOfSourceCodeDocuments()
+        int totalNumberOfDocuments = numberOfExternalDocuments + numberOfSourceCodeDocuments
+
+        for(int i= numberOfExternalDocuments; i < totalNumberOfDocuments; i++)
+        {
+            Matrix srsDocumentMatrix = getIndividualDocumentMatrix(i)
+
+            for(int j = 0; j < numberOfExternalDocuments; j++)
+            {
+                Matrix scDocumentMatrix = getIndividualDocumentMatrix(j)
+
+                Map <String, Double> similarityMap = new TreeMap<>()
+                similarityMap.put(corpus.getOrderedDocumentNameList().get(j), measureSimilarity(srsDocumentMatrix, scDocumentMatrix))
+                similarityResultOfEachDocument.put(corpus.getOrderedDocumentNameList().get(i), similarityMap)
+            }
+        }
+    }
 }
