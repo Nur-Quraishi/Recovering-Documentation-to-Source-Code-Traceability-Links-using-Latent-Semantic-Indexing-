@@ -29,22 +29,33 @@
                 },
                 submitSuccess: function($form, event) {
                     event.preventDefault(); // prevent default submit behaviour
+                    $('#noUpload').show();
+                    $('.afterUpload').hide();
                     // get values from FORM
                     var formData = new FormData();
                     formData.append("srs", $('#srs').get(0).files[0]);
                     formData.append("sc", $('#sc').get(0).files[0]);
+                    formData.append("dimensionality", $('#dimensionality').val());
 
                     $this = $("#start");
                     $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
                     $.ajax({
                         url: "${g.createLink(controller: 'commonAjax', action: 'resultCalculation')}",
                         type: "POST",
+						dataType: "JSON",
                         mimeType: "multipart/form-data",
                         contentType: false,
                         processData: false,
                         data: formData,
+						async: false,
                         cache: false,
                         success: function(data) {
+                            $('#noUpload').hide();
+                            // Result Integration
+							$('#percentageClass').removeClass();
+							$('#percentageClass').addClass("c100 big center p" + parseInt(data.percentageResult).toString());
+							$('#percentageValue').html(parseInt(data.percentageResult).toString() + "%");
+                            $('.afterUpload').show();
 							// Success message
 							$('#status').html("<div class='alert alert-success'>");
 							$('#status > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -56,7 +67,8 @@
 							//clear all fields
 							//$('#uploadForm').trigger("reset");
                         },
-                        error: function() {
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert(textStatus + "\n" + errorThrown);
                             // Fail message
                             $('#status').html("<div class='alert alert-danger'>");
                             $('#status > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -172,9 +184,21 @@
 					<h3 class="section-subheading text-muted">Here you can find the result in percentage of matching.</h3>
 				</div>
 			</div>
-			<div class="row justify-content-center" style="margin-bottom: 100px">
+			<div class="row justify-content-center" style="margin-bottom: 150px" id="noUpload">
 				<div class="col-sm-9">
 					<h3 style="color: red">No file is uploaded yet for calculating result.</h3>
+				</div>
+			</div>
+			<div class="row justify-content-center afterUpload" style="display: none">
+				<div class="col-sm-3 text-center">
+					<div class="c100 p0 big center" id="percentageClass" style="margin-bottom: 15px">
+						<span id="percentageValue">0%</span>
+						<div class="slice" style="z-index: auto">
+							<div class="bar" style="z-index: auto"></div>
+							<div class="fill" style="z-index: auto"></div>
+						</div>
+					</div>
+					<button id="more" class="btn btn-xs btn-info">Click here for more details...</button>
 				</div>
 			</div>
 		</div>

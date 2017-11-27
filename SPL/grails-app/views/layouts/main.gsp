@@ -32,6 +32,9 @@
 
 		<!-- Data table -->
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'datatables.min.css')}" type="text/css">
+
+		<!-- Circle -->
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'circle.css')}" type="text/css">
 	</head>
 	<body id="page-top">
 		<g:layoutBody/>

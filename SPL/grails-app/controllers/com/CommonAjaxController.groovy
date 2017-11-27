@@ -1,7 +1,9 @@
 package com
 
-import lsi.Corpus
+import grails.converters.JSON
 import lsi.LSIAlgorithm
+
+import java.text.DecimalFormat
 
 class CommonAjaxController
 {
@@ -51,8 +53,11 @@ class CommonAjaxController
             lsiAlgorithm.performSingularValueDecomposition()
             lsiAlgorithm.findSimilarities()
 
+            LinkedHashMap <String, String> data = new LinkedHashMap<>()
+            data.put("percentageResult", new DecimalFormat("##.##").format(lsiAlgorithm.calculateSimilarityInPercentage()))
+
             FileService.removeFiles(fileDirectory, filePaths)
-            render true
+            render data as JSON
         }
         catch (Exception e)
         {
