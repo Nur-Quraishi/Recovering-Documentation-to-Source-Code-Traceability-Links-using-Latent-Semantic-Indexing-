@@ -193,11 +193,18 @@ class Corpus
                     }
                     else
                     {
+                        //added if block for sabir's document
+                        if(line.contains("chapter") || line.contains("p a g e") || line.trim().equalsIgnoreCase(""))
+                        {
+                            continue
+                        }
+
                         String[] documentName = line.trim().split(" ")
                         int documentNameListSize = documentName.size()
                         String parsedDocumentName = ""
 
-                        for(int i = 0; i < documentNameListSize-1; i++)
+                        //modified value of i for sabir's document. normally it is 0
+                        for(int i = 1; i < documentNameListSize-1; i++)
                         {
                             if(documentName[i] != ".")
                                 parsedDocumentName  = parsedDocumentName + documentName[i] + " "
@@ -217,6 +224,12 @@ class Corpus
                 if(readerFlag && isTOCFinish)
                 {
                     currentDocument = orderedDocumentNameList.get(documentCounter)
+
+                    //added if block for sabir's document
+                    if(line.contains("p a g e"))
+                    {
+                        continue
+                    }
 
                     if(documentCounter + 1 < orderedDocumentNameList.size() && line.length() < orderedDocumentNameList.get(documentCounter + 1).length() && line.contains(orderedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
                     {
