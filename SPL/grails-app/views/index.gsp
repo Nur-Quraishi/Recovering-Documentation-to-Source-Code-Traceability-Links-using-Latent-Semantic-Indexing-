@@ -255,73 +255,91 @@
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<h2 class="section-heading">About</h2>
-					<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+					<h3 class="section-subheading text-muted">This web based application is based on the research report named, <q>Recovering Documentation-to-Source-Code Traceability Links using Latent Semantic Indexing</q> accomplished by Mr. Andrian Marcus & Mr. Jonathan I. Maletic. It is developed by M. A. Nur Quraishi, who is supervised by Mr. Rayhanur Rahman. This application is built on Grails Framework with Groovy as programming language. The methodology is described below:</h3>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
 					<ul class="timeline">
 						<li>
-							<div class="timeline-image">
-								<img class="rounded-circle img-fluid" src="img/about/1.jpg" alt="">
+							<div class="timeline-image" style="background-color: slateblue">
+								<h4>Source Code
+									<br>and
+									<br>External Docs</h4>
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4>2009-2011</h4>
-									<h4 class="subheading">Our Humble Beginnings</h4>
+									<h4>Step-1:</h4>
+									<h4 class="subheading">Reading Input</h4>
 								</div>
 								<div class="timeline-body">
-									<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+									<p class="text-muted">In the first step, the application takes an external document as pdf file and Java source code as zip file.</p>
 								</div>
 							</div>
 						</li>
 						<li class="timeline-inverted">
 							<div class="timeline-image">
-								<img class="rounded-circle img-fluid" src="img/about/2.jpg" alt="">
+								<h4><br>Corpus</h4>
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4>March 2011</h4>
-									<h4 class="subheading">An Agency is Born</h4>
+									<h4>Step-2:</h4>
+									<h4 class="subheading">Building Corpus</h4>
 								</div>
 								<div class="timeline-body">
-									<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+									<p class="text-muted">In this step, the input files are parsed using <a href="https://pdfbox.apache.org/" target="_blank" style="text-decoration:none">Apache PDFBox</a> and <a href="https://javaparser.org" target="_blank" style="text-decoration:none">JavaParser</a> and lots of pre-processing techniques includes pdf section extraction, camel case splitting & method and variable extraction.</p>
 								</div>
 							</div>
 						</li>
 						<li>
 							<div class="timeline-image">
-								<img class="rounded-circle img-fluid" src="img/about/3.jpg" alt="">
+								<h4>Vector
+									<br>Space</h4>
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4>December 2012</h4>
-									<h4 class="subheading">Transition to Full Service</h4>
+									<h4>Step-3:</h4>
+									<h4 class="subheading">Constructing Vector Space</h4>
 								</div>
 								<div class="timeline-body">
-									<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+									<p class="text-muted">Here, Latent Semantic Indexing (LSI) is applied on the corpus to produce term-by-document matrix where each column represents a document vector and each row represents term occurrence in each document.</p>
 								</div>
 							</div>
 						</li>
 						<li class="timeline-inverted">
 							<div class="timeline-image">
-								<img class="rounded-circle img-fluid" src="img/about/4.jpg" alt="">
+								<h4>LSI
+									<br>Subspace</h4>
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
-									<h4>July 2014</h4>
-									<h4 class="subheading">Phase Two Expansion</h4>
+									<h4>Step-4:</h4>
+									<h4 class="subheading">Dimension Reduction</h4>
 								</div>
 								<div class="timeline-body">
-									<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
+									<p class="text-muted">After creating term-by-document matrix, Singular Value Decomposition (SVD) is used to reduce the matrix dimension and preclude the less frequently occurring terms.</p>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="timeline-image">
+								<h4>Link
+									<br>Recovery</h4>
+							</div>
+							<div class="timeline-panel">
+								<div class="timeline-heading">
+									<h4>Step-5:</h4>
+									<h4 class="subheading">Identifying Links</h4>
+								</div>
+								<div class="timeline-body">
+									<p class="text-muted">Finally, Similarity measures are calculated for each vector of source code with other vectors of external document. Similarity measure are computed by the cosine or inner product between the corresponding vectors, which increases as more terms are shared. If the calculated result for a link is greater than threshold (=0.7), then the link will be recovered.</p>
 								</div>
 							</div>
 						</li>
 						<li class="timeline-inverted">
-							<div class="timeline-image">
-								<h4>Be Part
-									<br>Of Our
-									<br>Story!</h4>
+							<div class="timeline-image" style="background-color: lightseagreen">
+								<h4>
+									<br>Result</h4>
 							</div>
 						</li>
 					</ul>
