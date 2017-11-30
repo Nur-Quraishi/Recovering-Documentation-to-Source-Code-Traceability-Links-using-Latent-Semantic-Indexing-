@@ -157,6 +157,7 @@ class Corpus
             String currentDocument
             boolean readerFlag = false
             boolean isTOCFinish = false
+            boolean isLOFFinish = false
 
             PDFTextStripperByArea stripper = new PDFTextStripperByArea()
             stripper.setSortByPosition(true)
@@ -168,7 +169,7 @@ class Corpus
             String[] lines = pdfFileInText.split("\\r?\\n")
             for (String line : lines)
             {
-                line = line.toLowerCase().replaceAll("[^a-z0-9 .]+", "")
+                line = line.toLowerCase().replaceAll("[^a-z0-9 .&]+", "")
 
                 if(fragmentedHeadLine != null)
                 {
@@ -184,7 +185,7 @@ class Corpus
 
                 if(readerFlag && !isTOCFinish)
                 {
-                    if(orderedDocumentNameList.size() > 0 && line.contains(orderedDocumentNameList.get(0)) && !line.contains(". . ."))
+                    if(line.contains("list of figures"))
                     {
                         isTOCFinish = true
                         documentCounter = 0
@@ -193,55 +194,72 @@ class Corpus
                     }
                     else
                     {
-                        //added if block for sabir's document
-                        if(line.contains("chapter") || line.contains("p a g e") || line.trim().equalsIgnoreCase(""))
+                        String[] documentName = line.trim().split(" ")
+                        int documentNameListSize = documentName.size()
+
+                        if(documentNameListSize < 2)
                         {
                             continue
                         }
 
-                        String[] documentName = line.trim().split(" ")
-                        int documentNameListSize = documentName.size()
                         String parsedDocumentName = ""
 
-                        //modified value of i for sabir's document. normally it is 0
-                        for(int i = 1; i < documentNameListSize-1; i++)
+                        for(int i = 0; i < documentNameListSize-1; i++)
                         {
-                            if(documentName[i] != ".")
-                                parsedDocumentName  = parsedDocumentName + documentName[i] + " "
+                            if(!documentName[i].contains("...."))
+                            {
+                                if(documentName[i].equalsIgnoreCase("&"))
+                                {
+                                    parsedDocumentName  = parsedDocumentName + "and "
+                                }
+                                else
+                                {
+                                    if(documentName[i].endsWith("."))
+                                    {
+                                        documentName[i] = documentName[i].substring(0, documentName[i].length()-1)
+                                    }
+                                    parsedDocumentName  = parsedDocumentName + documentName[i] + " "
+                                }
+                            }
                             else
                                 break
                         }
+
                         parsedDocumentName = parsedDocumentName.trim()
-                        if(parsedDocumentName.endsWith("."))
-                        {
-                            parsedDocumentName = parsedDocumentName.substring(0, parsedDocumentName.length()-1)
-                        }
                         orderedDocumentNameList.add(parsedDocumentName)
                         documentLengthMap.put(parsedDocumentName, 0)
                     }
                 }
 
-                if(readerFlag && isTOCFinish)
+                if(!isLOFFinish && isTOCFinish)
                 {
-                    currentDocument = orderedDocumentNameList.get(documentCounter)
-
-                    //added if block for sabir's document
-                    if(line.contains("p a g e"))
-                    {
-                        continue
-                    }
-
-                    if(documentCounter + 1 < orderedDocumentNameList.size() && line.length() < orderedDocumentNameList.get(documentCounter + 1).length() && line.contains(orderedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
+                    if(line.length() < orderedDocumentNameList.get(0).length() && line.contains(orderedDocumentNameList.get(0).substring(0, line.trim().length())))
                     {
                         fragmentedHeadLine = line.trim() + " "
                         continue
                     }
 
-                    if(documentCounter + 1 < orderedDocumentNameList.size() && line.contains(orderedDocumentNameList.get(documentCounter + 1)))
+                    if(orderedDocumentNameList.size() > 0 && line.contains(orderedDocumentNameList.get(0)) && !line.contains("..."))
+                    {
+                        isLOFFinish = true
+                        continue
+                    }
+                }
+
+                if(readerFlag && isTOCFinish && isLOFFinish)
+                {
+                    currentDocument = orderedDocumentNameList.get(documentCounter)
+
+                    if(documentCounter + 1 < orderedDocumentNameList.size() && (line.trim().equalsIgnoreCase(orderedDocumentNameList.get(documentCounter + 1)) || line.trim().equalsIgnoreCase(orderedDocumentNameList.get(documentCounter + 1) + "s") || line.trim().equalsIgnoreCase(orderedDocumentNameList.get(documentCounter + 1).substring(0, orderedDocumentNameList.get(documentCounter + 1).length()-1))))
                     {
                         documentLengthMap.put(currentDocument, wordCounter)
                         wordCounter = 0
                         documentCounter += 1
+                        continue
+                    }
+                    else if(documentCounter + 1 < orderedDocumentNameList.size() && line.length() < orderedDocumentNameList.get(documentCounter + 1).length() && line.contains(orderedDocumentNameList.get(documentCounter + 1).substring(0, line.trim().length())))
+                    {
+                        fragmentedHeadLine = line.trim() + " "
                         continue
                     }
                     else

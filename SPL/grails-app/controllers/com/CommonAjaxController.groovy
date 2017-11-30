@@ -56,6 +56,27 @@ class CommonAjaxController
             LinkedHashMap <String, String> data = new LinkedHashMap<>()
             data.put("percentageResult", new DecimalFormat("##.##").format(lsiAlgorithm.calculateSimilarityInPercentage()))
 
+            int counter = 0
+            for(String scDocument : lsiAlgorithm.getSimilarityResultOfEachDocument().keySet())
+            {
+                Map<String, Double> srsDocuments = lsiAlgorithm.getSimilarityResultOfEachDocument().get(scDocument)
+
+                for(String srsDocument : srsDocuments.keySet())
+                {
+                    data.put("scDoc_" + counter, scDocument)
+                    data.put("srsDoc_" + counter, srsDocument)
+
+                    String similarityScore = new DecimalFormat("##.########").format(srsDocuments.get(srsDocument))
+                    if(similarityScore.equalsIgnoreCase("-0"))
+                    {
+                        similarityScore = "0"
+                    }
+
+                    data.put("sv_" + counter, similarityScore)
+                    counter += 1
+                }
+            }
+
             FileService.removeFiles(fileDirectory, filePaths)
             render data as JSON
         }

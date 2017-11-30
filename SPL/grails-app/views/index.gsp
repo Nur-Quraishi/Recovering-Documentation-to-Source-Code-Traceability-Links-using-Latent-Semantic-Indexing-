@@ -56,12 +56,15 @@
 							$('#percentageClass').addClass("c100 big center p" + parseInt(data.percentageResult).toString());
 							$('#percentageValue').html(parseInt(data.percentageResult).toString() + "%");
                             $('.afterUpload').show();
+                            $('#tableDetails').slideUp();
+                            populateTable(data);
+
 							// Success message
 							$('#status').html("<div class='alert alert-success'>");
 							$('#status > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
 								.append("</button>");
 							$('#status > .alert-success')
-								.append("<strong>Your files has been successfully uploaded and result is ready. </strong>");
+								.append("<strong>Your files has been successfully uploaded and result is ready. Scroll down to see it.</strong>");
 							$('#status > .alert-success')
 								.append('</div>');
 							//clear all fields
@@ -90,6 +93,35 @@
                 },
             });
         });
+        
+        $(document).on('click', '#more', function () {
+            if($(this).val() == "see more")
+			{
+			    $(this).val("see less");
+			    $(this).html("<i class='fa fa-arrow-circle-o-up' aria-hidden='true'></i>" + "Click here for collapse details...");
+                $('#tableDetails').slideDown();
+			}
+			else
+			{
+                $(this).val("see more");
+                $(this).html("<i class='fa fa-arrow-circle-o-down' aria-hidden='true'></i>" + "Click here for more details...");
+                $('#tableDetails').slideUp();
+			}
+        });
+
+        function populateTable(data)
+		{
+			$('#table').DataTable().clear();
+            var length = (Object.keys(data).length - 1) / 3;
+            for(var i = 0; i < length; i++)
+            {
+                $('#table').dataTable().fnAddData([
+                    data["scDoc_" + i],
+                    data["srsDoc_" + i],
+                    data["sv_" + i]
+                ]);
+            }
+        }
 
 		var ajaxAction = "${createLink(controller:'commonAjax',action:'mailSending')}";
 	</script>
@@ -198,7 +230,20 @@
 							<div class="fill" style="z-index: auto"></div>
 						</div>
 					</div>
-					<button id="more" class="btn btn-xs btn-info">Click here for more details...</button>
+					<button id="more" class="btn btn-xs btn-info" style="margin-bottom: 20px" value="see more"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>Click here for more details...</button>
+				</div>
+			</div>
+			<div class="row justify-content-center afterUpload" id="tableDetails" style="display: none">
+				<div class="col-xs-12 text-center">
+					<table class="table table-responsive" id="table">
+						<thead>
+							<tr class="table-dark">
+								<th class="text-center">Source Code Document</th>
+								<th class="text-center">External Document</th>
+								<th class="text-center">Similarity Value</th>
+							</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
 		</div>

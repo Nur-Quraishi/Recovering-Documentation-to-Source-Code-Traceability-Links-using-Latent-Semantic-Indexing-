@@ -26,6 +26,11 @@ class LSIAlgorithm
         this.dimensionOfLSISubspace = dimensionOfLSISubspace
     }
 
+    Map<String, Map<String, Double>> getSimilarityResultOfEachDocument()
+    {
+        return similarityResultOfEachDocument
+    }
+
     void createTermByDocumentMatrix()
     {
         termByDocumentMatrix = new Matrix(corpus.getTermMatrixValues())
@@ -154,7 +159,7 @@ class LSIAlgorithm
                 }
             }
 
-            if(maxSimilarityValue > 0.7)
+            if(maxSimilarityValue > 0.07)
             {
                 similarityValueMap = new TreeMap<>()
                 similarityValueMap.put(similarSrsDocument, maxSimilarityValue)
