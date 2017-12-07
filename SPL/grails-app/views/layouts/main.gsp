@@ -35,12 +35,18 @@
 
 		<!-- Circle -->
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'circle.css')}" type="text/css">
+
+		<!-- Pace -->
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'pace-theme-center-atom.css')}" type="text/css">
 	</head>
 	<body id="page-top">
 		<g:layoutBody/>
 
 		<script type="text/javascript">
 			$(document).ready(function(){
+                $(document).ajaxStart(function(){
+                    Pace.restart();
+                });
 				$('#table').DataTable({
                     "sScrollY": "500px",
                     "bScrollCollapse": true,
@@ -81,9 +87,14 @@
 
 		<!-- Custom scripts for this template -->
 		<script type="text/javascript" src="${resource(dir:'js',file:'agency.min.js')}"></script>
+
 		<!-- Data table -->
 		<script type="text/javascript" src="${resource(dir:'js',file:'datatables.js')}"></script>
+
 		<!-- File select -->
 		<script type="text/javascript" src="${resource(dir:'js',file:'bootstrap-fileselect.js')}"></script>
+
+		<!-- Pace -->
+		<script type="text/javascript" src="${resource(dir:'js',file:'pace.min.js')}"></script>
 	</body>
 </html>
