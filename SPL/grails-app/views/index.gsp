@@ -360,7 +360,7 @@
 			<div class="row justify-content-center">
 				<div class="col-sm-4">
 					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/team/rayhanSir.jpg" alt="">
+						<img class="mx-auto rounded-circle" src="images/team/rayhanSir.jpg" alt="">
 						<h4>Rayhanur Rahman</h4>
 						<p class="text-muted">Supervisor</p>
 						<ul class="list-inline social-buttons">
@@ -384,7 +384,7 @@
 				</div>
 				<div class="col-sm-4">
 					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/team/nur.jpg" alt="">
+						<img class="mx-auto rounded-circle" src="images/team/nur.jpg" alt="">
 						<h4>M. A. Nur Quraishi</h4>
 						<p class="text-muted">Supervisee</p>
 						<ul class="list-inline social-buttons">
@@ -421,7 +421,7 @@
 			<div class="row justify-content-center">
 				<div class="col-md-3 col-sm-6">
 					<a href="http://www.iit.du.ac.bd/" target="_blank">
-						<img class="img-fluid d-block mx-auto" height="100px" width="100px" src="img/logos/iit.jpg" alt="">
+						<img class="img-fluid d-block mx-auto" height="100px" width="100px" src="images/logos/iit.jpg" alt="">
 					</a>
 				</div>
 			</div>
