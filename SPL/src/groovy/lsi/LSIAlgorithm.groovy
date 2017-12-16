@@ -14,8 +14,9 @@ class LSIAlgorithm
     Map <String, Map <String, Double>> similarityResultOfEachDocument = new TreeMap<>()
     Map <String, Map <String, Double>> maxSimilarityResultOfEachDocument = new TreeMap<>()
     int dimensionOfLSISubspace
+    double threshold
 
-    LSIAlgorithm(String pdfPath, String zipPath, String stopWordPath, int dimensionOfLSISubspace) throws IOException
+    LSIAlgorithm(String pdfPath, String zipPath, String stopWordPath, int dimensionOfLSISubspace, double threshold) throws IOException
     {
         Corpus corpus = new Corpus(stopWordPath)
         corpus.createStopList()
@@ -24,6 +25,7 @@ class LSIAlgorithm
 
         this.corpus = corpus
         this.dimensionOfLSISubspace = dimensionOfLSISubspace
+        this.threshold = threshold
     }
 
     Map<String, Map<String, Double>> getSimilarityResultOfEachDocument()
@@ -159,7 +161,7 @@ class LSIAlgorithm
                 }
             }
 
-            if(maxSimilarityValue > 0.07)
+            if(maxSimilarityValue >= threshold)
             {
                 similarityValueMap = new TreeMap<>()
                 similarityValueMap.put(similarSrsDocument, maxSimilarityValue)

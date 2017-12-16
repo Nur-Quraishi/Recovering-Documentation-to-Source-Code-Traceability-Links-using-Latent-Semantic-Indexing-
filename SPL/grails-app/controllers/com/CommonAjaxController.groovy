@@ -39,6 +39,7 @@ class CommonAjaxController
         def uploadedSRS = params.srs
         def uploadedSC = params.sc
         int dimensionality = Integer.valueOf(params.dimensionality)
+        double threshold = Double.valueOf(params.threshold)
 
         List<String> filePaths = new ArrayList<>()
         def fileDirectory = servletContext.getRealPath("/") + "upload"
@@ -48,7 +49,7 @@ class CommonAjaxController
         {
             filePaths = FileService.saveFiles(uploadedSRS, uploadedSC, fileDirectory)
 
-            LSIAlgorithm lsiAlgorithm = new LSIAlgorithm(filePaths.get(0), filePaths.get(1), stopWordListPath, dimensionality)
+            LSIAlgorithm lsiAlgorithm = new LSIAlgorithm(filePaths.get(0), filePaths.get(1), stopWordListPath, dimensionality, threshold)
             lsiAlgorithm.createTermByDocumentMatrix()
             lsiAlgorithm.performSingularValueDecomposition()
             lsiAlgorithm.findSimilarities()

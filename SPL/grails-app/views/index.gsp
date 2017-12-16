@@ -36,6 +36,7 @@
                     formData.append("srs", $('#srs').get(0).files[0]);
                     formData.append("sc", $('#sc').get(0).files[0]);
                     formData.append("dimensionality", $('#dimensionality').val());
+                    formData.append("threshold", $('#threshold').val());
 
                     $this = $("#start");
                     $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
@@ -109,6 +110,34 @@
 			}
         });
 
+        var ajaxAction = "${createLink(controller:'commonAjax',action:'mailSending')}";
+
+        $(document).ready(function(){
+            $('#table').DataTable({
+                "sScrollY": "500px",
+                "bScrollCollapse": true,
+                "autoWidth": false,
+                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                    if(aData[2] >= parseFloat($('#threshold').val()))
+                    {
+                        $(nRow).addClass('table-success');
+                    }
+                    else if(aData[2] < 0)
+                    {
+                        $(nRow).addClass('table-danger');
+                    }
+                    else
+                    {
+                        $(nRow).addClass('table-primary');
+                    }
+
+                    $(nRow).find('*').each(function () {
+                        $(this).addClass('text-center');
+                    });
+                }
+            });
+        });
+
         function populateTable(data)
 		{
 			$('#table').DataTable().clear();
@@ -122,8 +151,6 @@
                 ]);
             }
         }
-
-		var ajaxAction = "${createLink(controller:'commonAjax',action:'mailSending')}";
 	</script>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -193,6 +220,10 @@
 								<div class="form-group">
 									<label for="dimensionality">Dimension of LSI Subspace:</label>
 									<input id="dimensionality" type="number" class="form-control" name="dimensionality" min="0" value="0"/>
+								</div>
+								<div class="form-group">
+									<label for="threshold">Similarity Threshold:</label>
+									<input id="threshold" type="number" step="0.01" class="form-control" name="threshold" min="-1" max="1" value="0"/>
 								</div>
 							</div>
 							<div class="clearfix"></div>

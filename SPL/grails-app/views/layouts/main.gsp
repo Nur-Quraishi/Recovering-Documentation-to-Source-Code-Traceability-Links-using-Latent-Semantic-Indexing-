@@ -47,29 +47,6 @@
                 $(document).ajaxStart(function(){
                     Pace.restart();
                 });
-				$('#table').DataTable({
-                    "sScrollY": "500px",
-                    "bScrollCollapse": true,
-                    "autoWidth": false,
-                    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                        if(aData[2] > 0.07)
-						{
-                            $(nRow).addClass('table-success');
-						}
-						else if(aData[2] < 0)
-						{
-                            $(nRow).addClass('table-danger');
-						}
-						else
-						{
-                            $(nRow).addClass('table-primary');
-						}
-
-                        $(nRow).find('*').each(function () {
-							$(this).addClass('text-center');
-                        });
-                    }
-				});
 			});
 		</script>
 
