@@ -161,7 +161,7 @@ class LSIAlgorithm
                 }
             }
 
-            if(maxSimilarityValue >= threshold)
+            if(maxSimilarityValue > threshold)
             {
                 similarityValueMap = new TreeMap<>()
                 similarityValueMap.put(similarSrsDocument, maxSimilarityValue)

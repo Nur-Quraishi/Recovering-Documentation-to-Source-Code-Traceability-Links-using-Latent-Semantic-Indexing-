@@ -118,7 +118,7 @@
                 "bScrollCollapse": true,
                 "autoWidth": false,
                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                    if(aData[2] >= parseFloat($('#threshold').val()))
+                    if(aData[2] > parseFloat($('#threshold').val()))
                     {
                         $(nRow).addClass('table-success');
                     }
