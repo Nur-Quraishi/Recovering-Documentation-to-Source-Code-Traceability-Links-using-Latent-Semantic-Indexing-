@@ -223,7 +223,7 @@
 								</div>
 								<div class="form-group">
 									<label for="threshold">Similarity Threshold:</label>
-									<input id="threshold" type="number" step="0.01" class="form-control" name="threshold" min="-1" max="1" value="0"/>
+									<input id="threshold" type="number" step="0.01" class="form-control" name="threshold" min="-1" max="1" value="0.70"/>
 								</div>
 							</div>
 							<div class="clearfix"></div>
