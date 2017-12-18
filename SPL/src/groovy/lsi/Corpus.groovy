@@ -165,11 +165,22 @@ class Corpus
             PDFTextStripper tStripper = new PDFTextStripper()
             String pdfFileInText = tStripper.getText(pdfDocument)
 
+            boolean doesLOFExist = pdfFileInText.contains("List of Figures")
+            if(!doesLOFExist)
+            {
+                isLOFFinish = true
+            }
+
             // split by whitespace
             String[] lines = pdfFileInText.split("\\r?\\n")
             for (String line : lines)
             {
                 line = line.toLowerCase().replaceAll("[^a-z0-9 .&]+", "")
+
+                if(line.contains("p a g e"))
+                {
+                    continue
+                }
 
                 if(fragmentedHeadLine != null)
                 {
@@ -185,7 +196,7 @@ class Corpus
 
                 if(readerFlag && !isTOCFinish)
                 {
-                    if(line.contains("list of figures"))
+                    if(line.contains("list of figures") || (orderedDocumentNameList.size() > 0 && line.contains(orderedDocumentNameList.get(0)) && !line.contains("...")))
                     {
                         isTOCFinish = true
                         documentCounter = 0
@@ -194,6 +205,17 @@ class Corpus
                     }
                     else
                     {
+                        if(line.contains("chapter topic page no") || line.equalsIgnoreCase(" "))
+                        {
+                            continue
+                        }
+
+                        if(orderedDocumentNameList.size() > 0 && line.length() < orderedDocumentNameList.get(0).length() && line.contains(orderedDocumentNameList.get(0).substring(0, line.trim().length())))
+                        {
+                            fragmentedHeadLine = line.trim() + " "
+                            continue
+                        }
+
                         String[] documentName = line.trim().split(" ")
                         int documentNameListSize = documentName.size()
 
