@@ -119,6 +119,11 @@ class LSIAlgorithm
         productMatrix = (srsDocumentMatrix.transpose()).times(scDocumentMatrix)
         denominator = calculateVectorModulus(srsDocumentMatrix) * calculateVectorModulus(scDocumentMatrix)
 
+        if(denominator == 0)
+        {
+            return 0
+        }
+
         similarityResult = productMatrix.det() / denominator
         return similarityResult
     }
