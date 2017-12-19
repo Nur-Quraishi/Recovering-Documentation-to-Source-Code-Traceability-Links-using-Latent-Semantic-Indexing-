@@ -362,21 +362,33 @@ class Corpus
                     {
                         for(String splitWord : splitWordWithUnderscore(word))
                         {
+                            if(splitWord.equalsIgnoreCase(""))
+                            {
+                                continue
+                            }
+
                             splitWord = splitWord.toLowerCase()
                             populateMaps(splitWord, entry.getName())
                             wordCounter += 1
                         }
                     }
-
-                    Matcher matcher = pattern.matcher(word)
-
-                    if(matcher.find())
+                    else
                     {
-                        for(String splitWord : splitCamelCaseWord(word))
+                        Matcher matcher = pattern.matcher(word)
+
+                        if(matcher.find())
                         {
-                            splitWord = splitWord.toLowerCase()
-                            populateMaps(splitWord, entry.getName())
-                            wordCounter += 1
+                            for(String splitWord : splitCamelCaseWord(word))
+                            {
+                                if(splitWord.equalsIgnoreCase(""))
+                                {
+                                    continue
+                                }
+
+                                splitWord = splitWord.toLowerCase()
+                                populateMaps(splitWord, entry.getName())
+                                wordCounter += 1
+                            }
                         }
                     }
 
